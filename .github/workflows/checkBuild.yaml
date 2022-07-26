@@ -1,0 +1,51 @@
+
+name: Check if the program build correctly
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check_build:
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker:latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - run: make
+        timeout-minutes: 5
+
+      - run: make clean
+
+      - name: Check executables
+        run: |
+          echo "FAIL_TASK=false" >> "$GITHUB_ENV"
+          SERV_BINARIES="${{ env.SERV_BIN }}"
+          IFS=$','
+          for BIN in $SERV_BINARIES; do
+            if [ ! -f "${BIN}" ]; then
+              echo "::error file=${BIN},title=Binary not found::${BIN}"
+              echo "FAIL_TASK=true" >> "$GITHUB_ENV"
+            fi
+            if [ ! -x "${BIN}" ]; then
+              echo "::error file=${BIN},title=Binary is not executable::${BIN}"
+              echo "FAIL_TASK=true" >> "$GITHUB_ENV"
+            fi
+          done
+          CLI_BINARIES="${{ env.CLIENT_BIN }}"
+          IFS=$','
+          for BIN in $CLI_BINARIES; do
+            if [ ! -f "${BIN}" ]; then
+              echo "::error file=${BIN},title=Binary not found::${BIN}"
+              echo "FAIL_TASK=true" >> "$GITHUB_ENV"
+            fi
+            if [ ! -x "${BIN}" ]; then
+              echo "::error file=${BIN},title=Binary is not executable::${BIN}"
+              echo "FAIL_TASK=true" >> "$GITHUB_ENV"
+            fi
+          done
+      - name: Check if task failed
+        if: env.FAIL_TASK == 'true'
+        run: exit 1
