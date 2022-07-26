@@ -1,0 +1,7 @@
+*.o
+autoCompletion
+dico
+*.gcno
+*.gcda
+.vscode
+unit_tests
