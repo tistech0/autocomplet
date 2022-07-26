@@ -1,11 +1,12 @@
-
-name: Check if the program build correctly
+name: Mirroring
 on:
   push:
     branches:
       - main
+ 
 jobs:
   check_build:
+    name: Check if the program build correctly
     runs-on: ubuntu-latest
     container: epitechcontent/epitest-docker:latest
     steps:
@@ -49,3 +50,16 @@ jobs:
       - name: Check if task failed
         if: env.FAIL_TASK == 'true'
         run: exit 1
+
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            git@github.com:EpitechPromo2025/B-SYN-400-NAN-4-1-autoCompletion-matthis.lesur.git
+          ssh_private_key:
+            ${{ secrets.SSH_KEY }}
