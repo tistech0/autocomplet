@@ -90,7 +90,7 @@ jobs:
   run_functional_test:
     name: Check if the program pass all functional test
     runs-on: ubuntu-latest
-    needs: [check_build]
+    needs: [run_test]
     container: epitechcontent/epitest-docker:latest
     steps:
       - name: Checkout repo
@@ -104,7 +104,7 @@ jobs:
   mirror:
     name: Push content of the current repo on mirror
     runs-on: ubuntu-latest
-    needs: [run_test][check_build]
+    needs: [run_functional_test]
     steps:
       - uses: actions/checkout@v2
         with:
