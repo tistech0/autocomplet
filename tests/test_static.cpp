@@ -20,7 +20,7 @@ Test(checkStreetNameEqual, two_different_city_with_same_adress)
     index.addGoodCity(tmp2);
     res = checkStreetNameEqual(&index);
 
-    cr_assert_eq(res, 1);
+    cr_assert_eq(res, 0);
 }
 
 Test (findCityName, no_city_starting_by_p)
