@@ -11,6 +11,8 @@ NC='\033[0m'
 #Compare the two files
 if diff ./functionnalTest/test18/ActualOutput ./functionnalTest/test18/ExpectedOutput > /dev/null ; then
     echo -e "Test 18 ->  misplaced street type ${Green}OK${NC}"
+    exit 1
 else
     echo -e "Test 18 ->  misplaced street type ${RED}KO${NC}"
+    exit 0
 fi

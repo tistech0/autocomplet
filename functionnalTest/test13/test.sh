@@ -13,6 +13,8 @@ echo $returnvalue >> ./functionnalTest/test13/ActualOutput
 #Compare the two files
 if diff ./functionnalTest/test13/ActualOutput ./functionnalTest/test13/ExpectedOutput > /dev/null ; then
     echo -e "Test 13 -> bad city after 2 letters ${Green}OK${NC}"
+    exit 1
 else
     echo -e "Test 13 -> bad city after 2 letters ${RED}KO${NC}"
+    exit 0
 fi

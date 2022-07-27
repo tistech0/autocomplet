@@ -11,6 +11,8 @@ NC='\033[0m'
 #Compare the two files
 if diff ./functionnalTest/test9/ActualOutput ./functionnalTest/test9/ExpectedOutput > /dev/null ; then
     echo -e "Test 9 -> no argument ${Green}OK${NC}"
+    exit 1
 else
     echo -e "Test 9 -> no argument ${RED}KO${NC}"
+    exit 0
 fi

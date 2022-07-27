@@ -11,6 +11,8 @@ NC='\033[0m'
 #Compare the two files
 if diff ./functionnalTest/test3/ActualOutput ./functionnalTest/test3/ExpectedOutput > /dev/null ; then
     echo -e "Test 3 -> 2 adresses 2 cities ${Green}OK${NC}"
+    exit 1
 else
     echo -e "Test 3 -> 2 adresses 2 cities ${RED}KO${NC}"
+    exit 0
 fi

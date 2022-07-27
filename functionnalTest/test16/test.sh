@@ -11,6 +11,8 @@ NC='\033[0m'
 #Compare the two files
 if diff ./functionnalTest/test16/ActualOutput ./functionnalTest/test16/ExpectedOutput > /dev/null ; then
     echo -e "Test 16 -> misplaced number ${Green}OK${NC}"
+    exit 1
 else
     echo -e "Test 16 -> misplaced number ${RED}KO${NC}"
+    exit 0
 fi
