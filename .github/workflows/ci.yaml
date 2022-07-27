@@ -41,6 +41,7 @@ jobs:
   check_build:
     name: Check if the program build correctly
     runs-on: ubuntu-latest
+    needs: [clean_repo]
     container: epitechcontent/epitest-docker:latest
     steps:
       - name: Checkout repo
@@ -70,12 +71,28 @@ jobs:
           done
       - name: Check if task failed
         if: env.FAIL_TASK == 'true'
-        run: exit 1
+        run: exit
 
+  run_test:
+    name: Check if the program pass all unit test
+    runs-on: ubuntu-latest
+    needs: [check_build]
+    container: epitechcontent/epitest-docker:latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install Criterion
+        run: brew install snaipe/soft/criterion
+      - name: Run Unit Tests
+        run: make tests_run
+  
   mirror:
     name: Push content of the current repo on mirror
     runs-on: ubuntu-latest
-    needs: [check_build]
+    needs: [run_test]
     steps:
       - uses: actions/checkout@v2
         with:
