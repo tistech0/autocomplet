@@ -92,5 +92,5 @@ if [ ${nbGoodTest} -eq 18 ]; then
     echo -e "${Green}You pass all test !${NC}"
     exit 0
 else
-    exit -1
+    exit 84
 fi
