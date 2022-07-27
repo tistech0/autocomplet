@@ -1,9 +1,15 @@
 name: CI
 on:
-  push:
-    branches:
-      - main
- 
+    push:
+    branches: [ main ]
+  delete:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  BINARY: "autoCompletion"
+
 jobs:
   check_build:
     name: Check if the program build correctly
@@ -23,21 +29,9 @@ jobs:
       - name: Check executables
         run: |
           echo "FAIL_TASK=false" >> "$GITHUB_ENV"
-          SERV_BINARIES="${{ env.SERV_BIN }}"
+          BINARIE="${{ env.BINARY }}"
           IFS=$','
-          for BIN in $SERV_BINARIES; do
-            if [ ! -f "${BIN}" ]; then
-              echo "::error file=${BIN},title=Binary not found::${BIN}"
-              echo "FAIL_TASK=true" >> "$GITHUB_ENV"
-            fi
-            if [ ! -x "${BIN}" ]; then
-              echo "::error file=${BIN},title=Binary is not executable::${BIN}"
-              echo "FAIL_TASK=true" >> "$GITHUB_ENV"
-            fi
-          done
-          CLI_BINARIES="${{ env.CLIENT_BIN }}"
-          IFS=$','
-          for BIN in $CLI_BINARIES; do
+          for BIN in $BINARY; do
             if [ ! -f "${BIN}" ]; then
               echo "::error file=${BIN},title=Binary not found::${BIN}"
               echo "FAIL_TASK=true" >> "$GITHUB_ENV"
