@@ -12,6 +12,32 @@ env:
   BINARY: "autoCompletion"
 
 jobs:
+  clean_repo:
+    name: Delete useless files
+    runs-on: ubuntu-latest
+    env:
+      USELESS_FILES_REGEX: (.*\.gc(no|da|ov))$|(.*\.(a|o))$|(.*~)$|^(#.*#)$|(.*(?i)pain_au_chocolat.*)|^tmp\/.*|.*\/tmp\/.*
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Find useless files recursively
+        run: |
+          USELESS_FILES=$(find . -type f -printf '%P\n' | { grep -P "${{ env.USELESS_FILES_REGEX }}" || true; })
+          if [ "$USELESS_FILES" != "" ]; then
+              IFS=$'\n'$'\r'
+              for LINE in $USELESS_FILES; do
+                  echo "::error file=${LINE},line=1,col=1,title=Useless file detected::${LINE}"
+              done
+              echo "FAIL_TASK=true" >> "$GITHUB_ENV"
+          else
+              echo "FAIL_TASK=false" >> "$GITHUB_ENV"
+          fi
+      - name: Check if task failed
+        if: env.FAIL_TASK == 'true'
+        run: exit 1
+
   check_build:
     name: Check if the program build correctly
     runs-on: ubuntu-latest
