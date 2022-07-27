@@ -84,8 +84,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Criterion
-        run: brew install snaipe/soft/criterion
       - name: Run Unit Tests
         run: make tests_run
   
