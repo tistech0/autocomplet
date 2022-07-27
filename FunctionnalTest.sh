@@ -90,4 +90,7 @@ incrementGoodTest $returnvalue
 echo -e "${Cyan}You pass ${nbGoodTest}/18 ${NC}"
 if [ ${nbGoodTest} -eq 18 ]; then
     echo -e "${Green}You pass all test !${NC}"
+    exit 0
+else
+    exit -1
 fi
