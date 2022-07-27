@@ -1,6 +1,7 @@
 name: CI
+
 on:
-    push:
+  push:
     branches: [ main ]
   delete:
     branches: [ main ]
